@@ -23,9 +23,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Build executable
+      - name: Build with Gradle
         run: |
-          ./gradlew nativeImage --no-daemon
+          ./gradlew build nativeBuild
           mv app/build/native-image/app.exe PCBooster.exe
 
       - name: Upload executable
