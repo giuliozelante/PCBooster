@@ -1,5 +1,54 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+# Java specific
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.gz
+*.bz2
 
-# Ignore Gradle build output directory
-build
+# Gradle specific
+.gradle
+build/
+build.gradle
+settings.gradle
+gradle.properties
+gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+# Native Image specific
+native-image/
+native-image.properties
+
+# VSCode specific
+.vscode/
+*.vsix
+
+# IDE specific
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Editor specific
+*.swp
+*.swo
+*.tmp
+*.bak
+*.cache
+
+# Miscellaneous
+.gradle-caches/
+.gradle-daemon/
+.gradle-notifications/
+.gradle-parallel/
+.gradle-tooling/
+.gradle-version/
+gradle-app.setting
+gradle-wrapper.jar

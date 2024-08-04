@@ -1,8 +1,0 @@
-{
-  "graalvm.home": "g:\\graalvm-jdk-22_windows-x64_bin\\graalvm-jdk-22.0.1+8.1",
-  "graalvm.installations": [
-    "",
-    "g:\\graalvm-jdk-22_windows-x64_bin\\graalvm-jdk-22.0.1+8.1"
-  ],
-  "java.compile.nullAnalysis.mode": "automatic"
-}
