@@ -10,6 +10,7 @@
 
 # Gradle specific
 .gradle
+!gradle/wrapper/gradle-wrapper.jar
 build/
 
 # Native Image specific
@@ -45,4 +46,3 @@ Thumbs.db
 .gradle-tooling/
 .gradle-version/
 gradle-app.setting
-gradle-wrapper.jar
