@@ -11,12 +11,6 @@
 # Gradle specific
 .gradle
 build/
-build.gradle
-settings.gradle
-gradle.properties
-gradle-wrapper.properties
-gradlew
-gradlew.bat
 
 # Native Image specific
 native-image/
