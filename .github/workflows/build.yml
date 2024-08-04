@@ -1,0 +1,32 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build executable
+        run: |
+          ./gradlew nativeImage --no-daemon
+          mv app/build/native-image/app.exe PCBooster.exe
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-executable
+          path: PCBooster.exe

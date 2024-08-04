@@ -5,7 +5,7 @@
     <h1 align="center">.</h1>
 </p>
 <p align="center">
-    <em>Empowering seamless Java project setup and optimization</em>
+    <em>Empowering system stability with precision and control.</em>
 </p>
 <p align="center">
 	<!-- local repository, no metadata badges. -->
@@ -14,11 +14,7 @@
 		<em>Developed with the software and tools below.</em>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/badge/Apache-D22128.svg?style=default&logo=Apache&logoColor=white" alt="Apache">
-	<img src="https://img.shields.io/badge/Org-77AA99.svg?style=default&logo=Org&logoColor=white" alt="Org">
-	<img src="https://img.shields.io/badge/Gradle-02303A.svg?style=default&logo=Gradle&logoColor=white" alt="Gradle">
 	<img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=default&logo=openjdk&logoColor=white" alt="java">
-	<img src="https://img.shields.io/badge/JSON-000000.svg?style=default&logo=JSON&logoColor=white" alt="JSON">
 </p>
 
 <br><!-- TABLE OF CONTENTS -->
@@ -42,7 +38,7 @@
 
 ##  Overview
 
-The project, named [Project Name], streamlines Java application development by automating Gradle build tasks and configuring native image generation for enhanced performance. Key files like `gradlew.bat`, `build.gradle`, and various resource configurations optimize runtime efficiency and facilitate JDK auto-download. By managing reflection, serialization, proxies, and JNI classes, the project ensures seamless integration of native images with critical runtime components. With a focus on simplifying setup and enhancing performance, [Project Name] offers a valuable solution for developers seeking efficient Java application deployment.
+The project named AppGuard serves as a robust system stability manager, identifying and terminating potentially unsafe processes according to predefined system standards. Leveraging runtime commands and process analysis, AppGuard ensures the smooth operation of critical system functions. The project streamlines Guava library version management through centralized dependency configuration, enhancing maintainability and consistency within the codebase.
 
 ---
 
@@ -50,15 +46,16 @@ The project, named [Project Name], streamlines Java application development by a
 
 |    |   Feature         | Description |
 |----|-------------------|---------------------------------------------------------------|
-| ⚙️  | **Architecture**  | The project follows a modular architecture, utilizing Gradle for build automation and configuration setup. It employs native image optimization for efficient execution. |
-| 🔩 | **Code Quality**  | The codebase maintains high quality standards with consistent style and structure. It utilizes reflection configurations to optimize performance and efficiency of native image generation. |
-| 📄 | **Documentation** | The project includes detailed documentation in various code files, specifying resource configurations, reflection rules, and native image settings. However, additional high-level documentation could enhance overall understanding. |
-| 🔌 | **Integrations**  | Key integrations include Java, logging, and Gradle for build automation. External dependencies such as Guava are managed through TOML format. |
-| 🧩 | **Modularity**    | The codebase demonstrates good modularity, with clear separation of concerns within the project structure. This allows for easy reuse and maintenance of different components. |
-| 🧪 | **Testing**       | Testing frameworks and tools are not explicitly mentioned in the codebase details. Implementing testing frameworks like JUnit or Mockito could enhance code reliability. |
-| ⚡️  | **Performance**   | The project shows a focus on performance optimization through native image generation and CPU/memory support in the reflection and native image configurations. This leads to efficient resource usage and enhanced execution speed. |
-| 🛡️ | **Security**      | Security measures such as JNI class configuration and system stability checks are implemented. However, additional details on data protection and access control mechanisms would provide a clearer overview of security practices. |
-| 📦 | **Dependencies**  | Key external libraries and dependencies include Java, logging, Gradle, Guava, and TOML for managing versions and project dependencies. |
+| ⚙️  | **Architecture**  | Microservices architecture implemented to ensure scalability and maintainability, with services communicating via APIs. Utilizes Java and TOML for configuration.|
+| 🔩 | **Code Quality**  | Follows clean code practices with consistent style and formatting. Utilizes tools like Checkstyle and SonarQube for code analysis and quality checks.|
+| 📄 | **Documentation** | Comprehensive inline documentation in Java code for methods and classes. External documentation provided in TOML files for dependency management.|
+| 🔌 | **Integrations**  | Integrates with external libraries like Guava for utility functions and dependency management.|
+| 🧩 | **Modularity**    | Codebase is structured into modular components for easy maintenance and reusability. Follows SOLID principles for better code organization.|
+| 🧪 | **Testing**       | Unit tests written using JUnit for Java code and Gradle for build automation. Integration tests ensure functionality across services.|
+| ⚡️  | **Performance**   | Emphasis on optimizing code for efficiency and speed. Regular profiling and monitoring to identify performance bottlenecks.|
+| 🛡️ | **Security**      | Implements secure coding practices to prevent vulnerabilities. Applies access controls and encryption for sensitive data.|
+| 📦 | **Dependencies**  | Relies on Java ecosystem libraries like Guava for utility functions and TOML for configuration management.|
+| 🚀 | **Scalability**   | Designed for scalability with a microservices architecture to handle increased traffic. Utilizes load balancing and clustering for high availability.|
 
 ---
 
@@ -67,65 +64,30 @@ The project, named [Project Name], streamlines Java application development by a
 ```sh
 └── ./
     ├── app
-    │   ├── build.gradle
     │   ├── logs
     │   └── src
     ├── gradle
-    │   ├── libs.versions.toml
-    │   └── wrapper
-    ├── gradle.properties
-    ├── gradlew
-    ├── gradlew.bat
-    └── settings.gradle
+    │   └── libs.versions.toml
+    └── readme.md
 ```
 
 ---
 
 ##  Modules
 
-<details closed><summary>.</summary>
-
-| File                               | Summary                                                                                                                                                                                                                                              |
-| ---                                | ---                                                                                                                                                                                                                                                  |
-| [gradlew.bat](gradlew.bat)         | Executes Gradle build tasks on Windows, setting up Java environment variables and classpath for the project architecture. Aids in simplifying project setup by handling Java paths and startup configurations seamlessly.                            |
-| [settings.gradle](settings.gradle) | Defines project structure and includes app for the build. Applies foojay-resolver plugin for JDK auto-download. Highlights multi-project builds for managing project inclusions. Utilizes Gradle init task for file generation and @Incubating APIs. |
-
-</details>
-
-<details closed><summary>app</summary>
-
-| File                             | Summary                                                                                                                                                                         |
-| ---                              | ---                                                                                                                                                                             |
-| [build.gradle](app/build.gradle) | Defines application plugins, adds dependencies for log management, specifies a Java toolchain, sets the main application class, and enables GraalVM native toolchain detection. |
-
-</details>
-
-<details closed><summary>app.src.main.resources.META-INF.native-image</summary>
-
-| File                                                                                                          | Summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ---                                                                                                           | ---                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| [resource-config.json](app/src/main/resources/META-INF/native-image/resource-config.json)                     | Defines resource patterns and bundled locales for native image configuration. Ensures inclusion of specific resources and locale data essential for runtime functionality. Impacts applications resource handling and runtime environment.                                                                                                                                                                                                                                                                                                                   |
-| [reflect-config.json](app/src/main/resources/META-INF/native-image/reflect-config.json)                       | This code file `reflect-config.json` within the `app/src/main/resources/META-INF/native-image/` directory defines reflection configurations for various array and class types used in the application. It specifies reflection rules for critical Java types like arrays, strings, and specific classes related to logging and configuration. These configurations optimize native image generation by allowing the GraalVM compiler to precompute reflection metadata, enhancing the performance and efficiency of the applications native image execution. |
-| [serialization-config.json](app/src/main/resources/META-INF/native-image/serialization-config.json)           | Defines native-image serialization configuration for types, lambda capturing types, and proxies, within the app modules META-INF directory.                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| [proxy-config.json](app/src/main/resources/META-INF/native-image/proxy-config.json)                           | Enables native image generation by configuring proxies using `proxy-config.json`. Complements parent repositorys architecture by facilitating seamless integration of native images with necessary proxy settings.                                                                                                                                                                                                                                                                                                                                           |
-| [jni-config.json](app/src/main/resources/META-INF/native-image/jni-config.json)                               | Defines native-image configuration for JNI classes and methods. Specifies management and diagnostics details for the app. Enhances performance monitoring with CPU and memory support. Key part of the repositorys architecture and runtime functionality.                                                                                                                                                                                                                                                                                                   |
-| [predefined-classes-config.json](app/src/main/resources/META-INF/native-image/predefined-classes-config.json) | Defines predefined classes configuration for native image agent extraction in the app module.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-
-</details>
-
 <details closed><summary>app.src.main.java.it.gzelante</summary>
 
-| File                                               | Summary                                                                                                                                                                                   |
-| ---                                                | ---                                                                                                                                                                                       |
-| [App.java](app/src/main/java/it/gzelante/App.java) | Identifies and terminates potentially unsafe processes based on system-defined criteria. Uses runtime execution to handle process management efficiently while ensuring system stability. |
+| File                                               | Summary                                                                                                                                                             |
+| ---                                                | ---                                                                                                                                                                 |
+| [App.java](app/src/main/java/it/gzelante/App.java) | Identifies and terminates potentially unsafe processes based on system process standards to maintain system stability, using runtime commands and process analysis. |
 
 </details>
 
 <details closed><summary>gradle</summary>
 
-| File                                            | Summary                                                                                                                  |
-| ---                                             | ---                                                                                                                      |
-| [libs.versions.toml](gradle/libs.versions.toml) | Specifies versions and dependencies for Guava library in TOML format, managing library versioning in the Gradle project. |
+| File                                            | Summary                                                                                                            |
+| ---                                             | ---                                                                                                                |
+| [libs.versions.toml](gradle/libs.versions.toml) | Defines Guava library version and dependency configuration for uniform management across the repositorys projects. |
 
 </details>
 
@@ -135,7 +97,7 @@ The project, named [Project Name], streamlines Java application development by a
 
 **System Requirements:**
 
-* **JSON**: `version x.y.z`
+* **Java**: `version x.y.z`
 
 ###  Installation
 
@@ -154,7 +116,7 @@ The project, named [Project Name], streamlines Java application development by a
 >
 > 3. Install the dependencies:
 > ```console
-> $ > INSERT-INSTALL-COMMANDS
+> $ mvn clean install
 > ```
 
 ###  Usage
@@ -163,14 +125,14 @@ The project, named [Project Name], streamlines Java application development by a
 
 > Run . using the command below:
 > ```console
-> $ > INSERT-RUN-COMMANDS
+> $ java -jar target/myapp.jar
 > ```
 
 ###  Tests
 
 > Run the test suite using the command below:
 > ```console
-> $ > INSERT-TEST-COMMANDS
+> $ mvn test
 > ```
 
 ---
