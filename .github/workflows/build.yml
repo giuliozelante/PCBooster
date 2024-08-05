@@ -14,10 +14,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Autotag
-        uses: phish108/autotag-action@v1.1.55
+        uses: butlerlogic/action-autotag@stable
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN}}
-          with-v: 'true'
+          tag_prefix: 'v'
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
