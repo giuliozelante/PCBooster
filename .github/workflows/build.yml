@@ -13,12 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Autotag
-        uses: butlerlogic/action-autotag@stable
+      - name: Minor version for each merge
+        id: AutoTagger
+        uses: anothrNick/github-tag-action@1.36.0
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-        with:
-          tag_prefix: 'v'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
 
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
