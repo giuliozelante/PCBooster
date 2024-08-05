@@ -28,29 +28,9 @@ jobs:
           ./gradlew nativeCompile
           mv app/build/native/nativeCompile/app.exe PCBooster.exe
 
-      - name: Upload executable
-        uses: actions/upload-artifact@v2
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
         with:
-          name: windows-executable
-          path: PCBooster.exe
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+          artifacts: app/build/native/nativeCompile/PCBooster.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Release artifacts for ${{ github.ref }}
-            - Executable: ${{ steps.upload_artifact.outputs.artifact_url }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: PCBooster.exe
-          asset_name: PCBooster.exe
-          asset_content_type: application/octet-stream
