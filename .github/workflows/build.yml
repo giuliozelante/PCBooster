@@ -6,20 +6,24 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: windows-latest
+  tag:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Minor version for each merge
-        id: AutoTagger
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: butlerlogic/action-autotag@stable
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        with:
+          tag_prefix: 'v'
 
+  build:
+    runs-on: windows-latest
+
+    steps:
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
