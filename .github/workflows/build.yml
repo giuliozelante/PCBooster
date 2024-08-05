@@ -13,12 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Minor version for each merge
-        uses: butlerlogic/action-autotag@stable
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - uses: phish108/autotag-action@v1.1.55
         with:
-          tag_prefix: 'v'
+          github-token: ${{ secrets.GITHUB_TOKEN}}
+          with-v: 'true'
 
   build:
     runs-on: windows-latest
