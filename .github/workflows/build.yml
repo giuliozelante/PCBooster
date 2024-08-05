@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Autotag
+        uses: Klemensas/action-autotag@stable
+        with:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          tag_prefix: 'v'
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
@@ -27,15 +32,6 @@ jobs:
         run: |
           ./gradlew nativeCompile
           mv app/build/native/nativeCompile/app.exe PCBooster.exe
-
-      - name: Bump version and create tag
-        uses: thomas-sn/bump-version-action@v1
-        with:
-          bump: patch
-          commit: true
-          push: true
-          tag: true
-          tag_prefix: v
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
