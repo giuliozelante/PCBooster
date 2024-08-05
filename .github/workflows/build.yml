@@ -28,6 +28,15 @@ jobs:
           ./gradlew nativeCompile
           mv app/build/native/nativeCompile/app.exe PCBooster.exe
 
+      - name: Bump version and create tag
+        uses: thomas-sn/bump-version-action@v1
+        with:
+          bump: patch
+          commit: true
+          push: true
+          tag: true
+          tag_prefix: v
+
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
