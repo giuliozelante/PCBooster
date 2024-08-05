@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: phish108/autotag-action@v1.1.55
+      - uses: phish108/autotag-action@v1.1.64
         with:
           github-token: ${{ secrets.GITHUB_TOKEN}}
           with-v: 'true'
