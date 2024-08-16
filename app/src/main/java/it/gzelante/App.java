@@ -45,7 +45,7 @@ public class App {
 
     private static final String[] getSystemProcesses() {
         return new String[]{
-            "svchost", "explorer", "system", "wininit", "smss", "csrss", "winlogon", "services", "lsass", "lsm", "code", "devenv", "wsl", "java", "gradle", "explorer"
+            "svchost", "explorer", "system", "wininit", "smss", "csrss", "winlogon", "services", "lsass", "lsm", "code", "devenv", "wsl", "java", "gradle", "explorer", "PCBooster", "cmd", "powershell"
         };
     }
 }

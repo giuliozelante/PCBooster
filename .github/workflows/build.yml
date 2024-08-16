@@ -2,26 +2,17 @@ name: Build Windows Executable
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v'
 
 jobs:
-  tag:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: phish108/autotag-action@v1.1.64
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN}}
-          with-v: 'true'
-
-  build:
-    runs-on: windows-latest
-
-    steps:
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
