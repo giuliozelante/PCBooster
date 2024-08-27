@@ -26,6 +26,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: app/build/native/nativeCompile/PCBooster.exe
+
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
