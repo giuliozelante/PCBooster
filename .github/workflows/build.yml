@@ -24,11 +24,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
-        run: |
-          ./gradlew nativeCompile
-          mv app/build/native/nativeCompile/PCBooster.exe PCBooster.exe
+        run: ./gradlew nativeCompile
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
           artifacts: app/build/native/nativeCompile/PCBooster.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
