@@ -28,9 +28,6 @@ jobs:
           ./gradlew nativeCompile
           mv app/build/native/nativeCompile/PCBooster.exe PCBooster.exe
 
-      - name: Generate Version
-        run: ./gradlew calculateVersion -PexportToGithub=true --scan
-
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
