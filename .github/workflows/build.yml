@@ -25,7 +25,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          gradlew nativeCompile
+          ./gradlew nativeCompile
           mv app/build/native/nativeCompile/app.exe PCBooster.exe
 
       - name: Generate Version
