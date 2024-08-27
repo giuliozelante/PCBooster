@@ -35,5 +35,5 @@ jobs:
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: app/build/native/nativeCompile/PCBooster.exe
+          artifacts: 'app/build/native/nativeCompile/PCBooster.exe'
           token: ${{ secrets.GITHUB_TOKEN }}
