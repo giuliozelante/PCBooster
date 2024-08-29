@@ -13,10 +13,6 @@
 !gradle/wrapper/gradle-wrapper.jar
 build/
 
-# Native Image specific
-native-image/
-native-image.properties
-
 # VSCode specific
 .vscode/
 *.vsix
