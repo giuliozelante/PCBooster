@@ -1,4 +1,4 @@
-name: Build Windows Executable
+name: Build Executables
 
 on:
   push:
@@ -10,7 +10,18 @@ jobs:
     permissions:
       contents: write
 
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            artifact_name: PCBooster.exe
+          - os: ubuntu-latest
+            artifact_name: PCBooster
+          - os: macos-latest
+            artifact_name: PCBooster
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -32,11 +43,18 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Releases
-          path: app/build/native/nativeCompile/PCBooster.exe
+          name: ${{ matrix.os }}-Release
+          path: app/build/native/nativeCompile/${{ matrix.artifact_name }}
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'app/build/native/nativeCompile/PCBooster.exe'
+          artifacts: '**/PCBooster*'
           token: ${{ secrets.GITHUB_TOKEN }}

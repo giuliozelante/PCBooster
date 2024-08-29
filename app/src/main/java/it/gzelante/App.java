@@ -1,64 +1,63 @@
 package it.gzelante;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import lombok.extern.log4j.Log4j2;
+
 @Log4j2
 public class App {
 
-    /**
-     * Identifies and terminates potentially unsafe processes based on system process standards to maintain system stability,
-     * using runtime commands and process analysis.
-     *
-     * @param args command line arguments (currently unused)
-     * @throws IOException if an I/O error occurs
-     * @throws InterruptedException if the thread is interrupted
-     */
-    public static void main(String[] args) throws IOException, InterruptedException {
-        String[] command = {"tasklist", "/v", "/fo", "csv"};
-        Process process = Runtime.getRuntime().exec(command);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-        String line;
-        int i = 0;
-        while ((line = reader.readLine()) != null) {
-            if(i != 0) {
-                String[] fields = line.split(",");
-
-                String imageName = fields[0].trim();
-
-                if (isSafeToKill(fields)) {
-                    String pid = fields[1].trim();
-                    String[] killCommand = {"taskkill", "/F", "/PID", pid};
-                    log.info(String.join(" ", killCommand)+" "+imageName);
-                    Runtime.getRuntime().exec(killCommand);
-                }
-
-            }
-            i++;
-        }
-    }
-    /**
-     * Decides if a process is safe to kill based on its name and type.
-     * A process is considered safe to kill if it is not a service and if its name does not contain any of the strings returned by {@link #getSystemProcesses()}.
-     * @param processInfo the information about the process, as returned by the "tasklist /v /fo csv" command
-     * @return true if the process is safe to kill, false otherwise
-     */
-    private static boolean isSafeToKill(String[] processInfo) {
-        return !processInfo[2].trim().toUpperCase().contains("SERVICE") && Arrays.stream(getSystemProcesses()).noneMatch(i -> processInfo[0].trim().toUpperCase().contains(i.toUpperCase()));
+    public static void main(String[] args) {
+        ProcessHandle.allProcesses()
+            .filter(App::isSafeToKill)
+            .forEach(process -> {
+                long pid = process.pid();
+                String command = process.info().command().orElse("Unknown");
+                log.info("Terminating process: PID {} - {}", pid, command);
+                process.destroyForcibly();
+            });
     }
 
-    /**
-     * Returns a list of process names that are considered safe to kill.
-     *
-     * @return a list of process names
-     */
-    private static final String[] getSystemProcesses() {
-        return new String[]{
-            "svchost", "explorer", "system", "wininit", "smss", "csrss", "winlogon", "services", "lsass", "lsm", "code", "devenv", "wsl", "java", "gradle", "explorer", "PCBooster", "cmd", "powershell"
+    private static boolean isSafeToKill(ProcessHandle process) {
+        String command = process.info().command().orElse("").toLowerCase();
+        return !command.contains("service") &&
+               Arrays.stream(getSystemProcesses()).noneMatch(command::contains);
+    }
+
+    private static String[] getSystemProcesses() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String[] windowsProcesses = {
+            "svchost", "explorer", "system", "wininit", "smss", "csrss", "winlogon",
+            "services", "lsass", "lsm", "devenv", "wsl", "cmd", "powershell"
         };
+        String[] macProcesses = {
+            "launchd", "kernel_task", "WindowServer", "loginwindow", "Finder",
+            "SystemUIServer", "Dock", "Spotlight", "coreaudiod", "mds"
+        };
+        String[] linuxProcesses = {
+            "systemd", "init", "kthreadd", "kworker", "rcu_sched", "bash",
+            "sshd", "dbus-daemon", "NetworkManager", "rsyslogd"
+        };
+        // Common non-OS related processes
+        String[] commonProcesses = {"java", "gradle"};
+
+        String[] osSpecificProcesses;
+        if (os.contains("win")) {
+            osSpecificProcesses = windowsProcesses;
+        } else if (os.contains("mac")) {
+            osSpecificProcesses = macProcesses;
+        } else if (os.contains("nux") || os.contains("nix") || os.contains("aix")) {
+            osSpecificProcesses = linuxProcesses;
+        } else {
+            // Default to an empty array if OS is not recognized
+            osSpecificProcesses = new String[0];
+        }
+
+        // Combine OS-specific processes with common processes
+        String[] result = new String[osSpecificProcesses.length + commonProcesses.length];
+        System.arraycopy(osSpecificProcesses, 0, result, 0, osSpecificProcesses.length);
+        System.arraycopy(commonProcesses, 0, result, osSpecificProcesses.length, commonProcesses.length);
+
+        return result;
     }
 }
