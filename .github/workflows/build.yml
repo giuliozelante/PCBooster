@@ -7,9 +7,8 @@ on:
 
 jobs:
   build:
-    permissions:
-      contents: write
-
+    name: PCBooster on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
@@ -20,8 +19,6 @@ jobs:
             artifact_name: PCBooster
           - os: macos-latest
             artifact_name: PCBooster
-
-    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -45,13 +42,6 @@ jobs:
         with:
           name: ${{ matrix.os }}-Release
           path: app/build/native/nativeCompile/${{ matrix.artifact_name }}
-
-  create-release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v2
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
