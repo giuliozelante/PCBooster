@@ -15,13 +15,6 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        include:
-          - os: windows-latest
-            artifact_name: PCBooster.exe
-          - os: ubuntu-latest
-            artifact_name: PCBooster
-          - os: macos-latest
-            artifact_name: PCBooster
 
     steps:
       - name: Checkout code
@@ -44,10 +37,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-Release
-          path: app/build/native/nativeCompile/${{ matrix.artifact_name }}
+          path: app/build/native/nativeCompile/${{ matrix.os }}/PCBooster*
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: '**/PCBooster*'
+          artifacts: 'app/build/native/nativeCompile/${{ matrix.os }}/PCBooster*'
           token: ${{ secrets.GITHUB_TOKEN }}
