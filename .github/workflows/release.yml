@@ -43,7 +43,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew nativeImage
+        run: ./gradlew nativeCompile
 
       - name: Create Release Directory
         run: |
@@ -78,7 +78,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew nativeImage
+        run: ./gradlew nativeCompile
 
       - name: Create Release Directory
         run: |
@@ -110,7 +110,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
-        run: ./gradlew nativeImage
+        run: ./gradlew nativeCompile
 
       - name: Create Release Directory
         run: |
