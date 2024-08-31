@@ -26,7 +26,8 @@ jobs:
             echo $version | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g'
           }
 
-          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
+          git fetch --tags
+          latest_tag=$(git describe --tags --abbrev=0 || echo v0.0.0)
           new_tag=$(increment_version $latest_tag)
 
           while git rev-parse $new_tag >/dev/null 2>&1; do
@@ -37,7 +38,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git tag $new_tag
-          git push origin $new_tag
+          git push origin $new_tag --force
 
       - name: Create Release
         id: create_release
