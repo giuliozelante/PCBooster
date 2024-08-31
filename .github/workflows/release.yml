@@ -1,70 +1,125 @@
-name: Create Release
+name: Perform release
 
 on:
-  workflow_run:
-    workflows:
-      [
-        'Build Windows Executable',
-        'Build macOS Executable',
-        'Build Ubuntu Executable',
-      ]
-    types:
-      - completed
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Get branch name
-        id: branch-name
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-
+      - uses: actions/checkout@v4
       - name: Create Release
-        id: create_release
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: release-${{ steps.branch-name.outputs.BRANCH_NAME }}-${{ github.run_number }}
-          release_name: Release ${{ steps.branch-name.outputs.BRANCH_NAME }} (${{ github.run_number }})
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+  perform-release-linux:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Windows Release Asset
-        uses: actions/upload-release-asset@v1
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew nativeImage
+
+      - name: Create Release Directory
+        run: |
+          mkdir -p release/linux
+          cp app/build/native/nativeCompile/PCBooster release/linux/PCBooster
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/linux/PCBooster
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./windows-Release/PCBooster.exe
-          asset_name: PCBooster-windows.exe
-          asset_content_type: application/octet-stream
 
-      - name: Upload macOS Release Asset
-        uses: actions/upload-release-asset@v1
+  perform-release-macos:
+    runs-on: macos-latest
+    needs: create-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew nativeImage
+
+      - name: Create Release Directory
+        run: |
+          mkdir -p release/macos
+          cp app/build/native/nativeCompile/PCBooster release/macos/PCBooster
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/macos/PCBooster
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./macos-Release/PCBooster
-          asset_name: PCBooster-macos
-          asset_content_type: application/octet-stream
 
-      - name: Upload Linux Release Asset
-        uses: actions/upload-release-asset@v1
+  perform-release-windows:
+    runs-on: windows-latest
+    needs: create-release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build with Gradle
+        run: ./gradlew nativeImage
+
+      - name: Create Release Directory
+        run: |
+          mkdir -p release/windows
+          cp app/build/native/nativeCompile/PCBooster.exe release/windows/PCBooster.exe
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/windows/PCBooster.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./linux-Release/PCBooster
-          asset_name: PCBooster-linux
-          asset_content_type: application/octet-stream
