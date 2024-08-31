@@ -39,15 +39,16 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
-      - name: Create Release Directory
+      - name: Create Release Archive
         run: |
-          mkdir -p release/linux
-          cp app/build/native/nativeCompile/PCBooster release/linux/PCBooster
+          mkdir -p release
+          cp app/build/native/nativeCompile/PCBooster release/PCBooster
+          tar -czvf PCBooster-linux.tar.gz -C release PCBooster
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: release/linux/PCBooster
+          files: PCBooster-linux.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -74,15 +75,16 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
-      - name: Create Release Directory
+      - name: Create Release Archive
         run: |
-          mkdir -p release/macos
-          cp app/build/native/nativeCompile/PCBooster release/macos/PCBooster
+          mkdir -p release
+          cp app/build/native/nativeCompile/PCBooster release/PCBooster
+          tar -czvf PCBooster-macos.tar.gz -C release PCBooster
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: release/macos/PCBooster
+          files: PCBooster-macos.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -106,14 +108,15 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
-      - name: Create Release Directory
+      - name: Create Release Archive
         run: |
-          mkdir -p release/windows
-          cp app/build/native/nativeCompile/PCBooster.exe release/windows/PCBooster.exe
+          mkdir release
+          copy app\build\native\nativeCompile\PCBooster.exe release\PCBooster.exe
+          Compress-Archive -Path release\PCBooster.exe -DestinationPath PCBooster-windows.zip
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: release/windows/PCBooster.exe
+          files: PCBooster-windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
