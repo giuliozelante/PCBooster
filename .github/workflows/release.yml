@@ -13,8 +13,6 @@ jobs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Get latest tag
         id: get_latest_tag
@@ -23,8 +21,18 @@ jobs:
       - name: Create new tag
         id: create_tag
         run: |
+          increment_version() {
+            local version=$1
+            echo $version | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g'
+          }
+
           latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
-          new_tag=$(echo $latest_tag | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          new_tag=$(increment_version $latest_tag)
+
+          while git rev-parse $new_tag >/dev/null 2>&1; do
+            new_tag=$(increment_version $new_tag)
+          done
+
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
           git config user.name github-actions
           git config user.email github-actions@github.com
