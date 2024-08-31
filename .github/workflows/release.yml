@@ -1,7 +1,15 @@
 name: Create Release
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      [
+        'Build Windows Executable',
+        'Build macOS Executable',
+        'Build Ubuntu Executable',
+      ]
+    types:
+      - completed
 
 jobs:
   create-release:
@@ -25,8 +33,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: ubuntu-Release
-          path: ubuntu-release
+          name: linux-Release
+          path: linux-release
 
       - name: Create release
         id: create_release
@@ -56,6 +64,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ubuntu-release
-          asset_name: PCBooster-ubuntu
-          asset_content_type: application/x-zip-compressed
+          asset_path: linux-release
+          asset_name: PCBooster-linux
+          asset_content_type: application/octet-stream
