@@ -37,19 +37,19 @@ jobs:
       - name: Download Ubuntu artifact
         uses: actions/download-artifact@v3
         with:
-          name: ubuntu-Release
+          name: PCBooster-ubuntu
           path: ubuntu-Release
 
       - name: Download macOS artifact
         uses: actions/download-artifact@v3
         with:
-          name: macos-Release
+          name: PCBooster-macos
           path: macos-Release
 
       - name: Download Windows artifact
         uses: actions/download-artifact@v3
         with:
-          name: windows-Release
+          name: PCBooster-windows
           path: windows-Release
 
       - name: Create Release
