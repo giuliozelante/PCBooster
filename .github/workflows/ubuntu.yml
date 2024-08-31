@@ -1,4 +1,4 @@
-name: Build Executables
+name: Build Ubuntu Executable
 
 on:
   push:
@@ -6,15 +6,11 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  build-ubuntu:
     permissions:
       contents: write
-
-    name: PCBooster on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+    name: PCBooster on Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -36,11 +32,11 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}-Release
-          path: app/build/native/nativeCompile/${{ matrix.os }}/PCBooster*
+          name: ubuntu-Release
+          path: app/build/native/nativeCompile/PCBooster
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'app/build/native/nativeCompile/${{ matrix.os }}/PCBooster*'
+          artifacts: 'app/build/native/nativeCompile/PCBooster'
           token: ${{ secrets.GITHUB_TOKEN }}
