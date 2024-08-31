@@ -29,11 +29,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
-      - name: Upload Artifacts
+      - name: Create Release Directory
+        run: mkdir release
+
+      - name: Move Artifact to Release Directory
+        run: move app\build\native\nativeCompile\PCBooster.exe release\windows\
+
+      - name: Upload Release Artifact
         uses: actions/upload-artifact@v3
         with:
           name: windows-Release
-          path: app/build/native/nativeCompile/windows/PCBooster.exe
+          path: release/windows/PCBooster.exe
+          if-no-files-found: error
 
       - name: Set build completion output
         run: echo "build_completed=true" >> $GITHUB_OUTPUT

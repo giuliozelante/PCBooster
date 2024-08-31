@@ -32,11 +32,17 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew nativeCompile
 
-      - name: Upload Artifacts
+      - name: Create Release Directory
+        run: mkdir release
+
+      - name: Move Artifact to Release Directory
+        run: mv app/build/native/nativeCompile/PCBooster release/linux/
+
+      - name: Upload Release Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ubuntu-Release
-          path: app/build/native/nativeCompile/linux/PCBooster
-
+          name: linux-Release
+          path: release/linux/PCBooster
+          if-no-files-found: error
       - name: Set build completion output
         run: echo "build_completed=true" >> $GITHUB_OUTPUT
