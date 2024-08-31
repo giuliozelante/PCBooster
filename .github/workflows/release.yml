@@ -1,14 +1,34 @@
 name: Create Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag for this release'
-        required: true
+  workflow_run:
+    workflows:
+      [
+        'Build Ubuntu Executable',
+        'Build macOS Executable',
+        'Build Windows Executable',
+      ]
+    types:
+      - completed
 
 jobs:
+  check-builds:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+    steps:
+      - id: check
+        run: |
+          if [[ "${{ github.event.workflow_run.name }}" == "Build Windows Executable" ]]; then
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          fi
+
   create-release:
+    needs: check-builds
+    if: needs.check-builds.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -37,6 +57,6 @@ jobs:
         with:
           artifacts: 'ubuntu-Release/PCBooster,macos-Release/PCBooster,windows-Release/PCBooster.exe'
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.event.inputs.tag }}
+          tag: ${{ github.ref_name }}
           allowUpdates: true
           replacesArtifacts: true

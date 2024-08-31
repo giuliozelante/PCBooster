@@ -37,3 +37,6 @@ jobs:
         with:
           name: macos-Release
           path: app/build/native/nativeCompile/macos/PCBooster
+
+      - name: Set build completion output
+        run: echo "build_completed=true" >> $GITHUB_OUTPUT

@@ -37,3 +37,6 @@ jobs:
         with:
           name: ubuntu-Release
           path: app/build/native/nativeCompile/linux/PCBooster
+
+      - name: Set build completion output
+        run: echo "build_completed=true" >> $GITHUB_OUTPUT

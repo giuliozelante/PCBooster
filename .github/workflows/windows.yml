@@ -34,3 +34,6 @@ jobs:
         with:
           name: windows-Release
           path: app/build/native/nativeCompile/windows/PCBooster.exe
+
+      - name: Set build completion output
+        run: echo "build_completed=true" >> $GITHUB_OUTPUT
