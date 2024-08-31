@@ -33,7 +33,7 @@ jobs:
         run: ./gradlew nativeCompile
 
       - name: Create Release Directory
-        run: mkdir release
+        run: mkdir -p release/linux
 
       - name: Move Artifact to Release Directory
         run: mv app/build/native/nativeCompile/PCBooster release/linux/
