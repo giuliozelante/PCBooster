@@ -36,10 +36,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ubuntu-Release
-          path: app/build/native/nativeCompile/PCBooster
+          path: app/build/native/nativeCompile/linux/PCBooster
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'app/build/native/nativeCompile/PCBooster'
+          artifacts: 'app/build/native/nativeCompile/linux/PCBooster'
           token: ${{ secrets.GITHUB_TOKEN }}

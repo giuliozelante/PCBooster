@@ -33,10 +33,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: windows-Release
-          path: app/build/native/nativeCompile/PCBooster.exe
+          path: app/build/native/nativeCompile/windows/PCBooster.exe
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'app/build/native/nativeCompile/PCBooster.exe'
+          artifacts: 'app/build/native/nativeCompile/windows/PCBooster.exe'
           token: ${{ secrets.GITHUB_TOKEN }}

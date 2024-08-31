@@ -36,10 +36,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: macos-Release
-          path: app/build/native/nativeCompile/PCBooster
+          path: app/build/native/nativeCompile/macos/PCBooster
 
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'app/build/native/nativeCompile/PCBooster'
+          artifacts: 'app/build/native/nativeCompile/macos/PCBooster'
           token: ${{ secrets.GITHUB_TOKEN }}
