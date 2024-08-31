@@ -1,62 +1,61 @@
 name: Create Release
 
 on:
-  workflow_run:
-    workflows:
-      [
-        'Build Ubuntu Executable',
-        'Build macOS Executable',
-        'Build Windows Executable',
-      ]
-    types:
-      - completed
+  workflow_dispatch:
 
 jobs:
-  check-builds:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    outputs:
-      should_release: ${{ steps.check.outputs.should_release }}
-    steps:
-      - id: check
-        run: |
-          if [[ "${{ github.event.workflow_run.name }}" == "Build Windows Executable" ]]; then
-            echo "should_release=true" >> $GITHUB_OUTPUT
-          else
-            echo "should_release=false" >> $GITHUB_OUTPUT
-          fi
-
   create-release:
-    needs: check-builds
-    if: needs.check-builds.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Download Ubuntu artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: PCBooster-ubuntu
-          path: ubuntu-Release
+          name: windows-Release
+          path: windows-release
 
-      - name: Download macOS artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: PCBooster-macos
-          path: macos-Release
+          name: macos-Release
+          path: macos-release
 
-      - name: Download Windows artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          name: PCBooster-windows
-          path: windows-Release
+          name: ubuntu-Release
+          path: ubuntu-release
 
-      - name: Create Release
-        uses: ncipollo/release-action@v1
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          artifacts: 'ubuntu-Release/PCBooster,macos-Release/PCBooster,windows-Release/PCBooster.exe'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
-          allowUpdates: true
-          replacesArtifacts: true
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: "This release contains the following packages:\n- Windows: windows-release\n- macOS: macos-release\n- Ubuntu: ubuntu-release"
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: windows-release
+          asset_name: PCBooster-windows.exe
+          asset_content_type: application/x-msdownload
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: macos-release
+          asset_name: PCBooster-macos
+          asset_content_type: application/x-zip-compressed
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ubuntu-release
+          asset_name: PCBooster-ubuntu
+          asset_content_type: application/x-zip-compressed
