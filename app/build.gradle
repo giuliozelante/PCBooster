@@ -5,7 +5,7 @@ plugins {
     id 'com.zegreatrob.tools.tagger' version '1.4.11'
 }
 
-version = '0.0.1'
+version = '0.3.2'
 
 repositories {
     mavenCentral()
@@ -14,6 +14,7 @@ repositories {
 dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation 'org.ajoberstar.grgit:grgit-core:5.2.1'
 }
 
 java {
