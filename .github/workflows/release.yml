@@ -1,0 +1,43 @@
+name: Create Release
+
+on:
+  workflow_run:
+    workflows:
+      [
+        'Build Ubuntu Executable',
+        'Build macOS Executable',
+        'Build Windows Executable',
+      ]
+    types:
+      - completed
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download Ubuntu artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ubuntu-Release
+          path: ubuntu-Release
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: macos-Release
+          path: macos-Release
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-Release
+          path: windows-Release
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'ubuntu-Release/PCBooster,macos-Release/PCBooster,windows-Release/PCBooster.exe'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          replacesArtifacts: true

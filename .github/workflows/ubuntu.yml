@@ -37,9 +37,3 @@ jobs:
         with:
           name: ubuntu-Release
           path: app/build/native/nativeCompile/linux/PCBooster
-
-      - name: Create GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: 'app/build/native/nativeCompile/linux/PCBooster'
-          token: ${{ secrets.GITHUB_TOKEN }}
