@@ -33,7 +33,7 @@ jobs:
         run: ./gradlew nativeCompile
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: macos-Release
           path: app/build/native/nativeCompile/macos/PCBooster

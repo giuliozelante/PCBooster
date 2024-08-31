@@ -1,35 +1,33 @@
 name: Create Release
 
 on:
-  workflow_run:
-    workflows:
-      [
-        'Build Ubuntu Executable',
-        'Build macOS Executable',
-        'Build Windows Executable',
-      ]
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for this release'
+        required: true
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Download Ubuntu artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ubuntu-Release
           path: ubuntu-Release
 
       - name: Download macOS artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: macos-Release
           path: macos-Release
 
       - name: Download Windows artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: windows-Release
           path: windows-Release
@@ -39,5 +37,6 @@ jobs:
         with:
           artifacts: 'ubuntu-Release/PCBooster,macos-Release/PCBooster,windows-Release/PCBooster.exe'
           token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.tag }}
           allowUpdates: true
           replacesArtifacts: true
