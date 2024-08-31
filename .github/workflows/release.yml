@@ -10,18 +10,29 @@ on:
       ]
     types:
       - completed
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get branch name
+        id: branch-name
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: release-${{ steps.branch-name.outputs.BRANCH_NAME }}-${{ github.run_number }}
+          release_name: Release ${{ steps.branch-name.outputs.BRANCH_NAME }} (${{ github.run_number }})
           draft: false
           prerelease: false
 
