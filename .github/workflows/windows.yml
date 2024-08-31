@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew nativeCompile
 
       - name: Create Release Directory
-        run: md /p release\windows
+        run: md release\windows
 
       - name: Move Artifact to Release Directory
         run: move app\build\native\nativeCompile\PCBooster.exe release\windows\
